@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href=" {% url 'work:client_create' %}">Create New Client</a>
+
+{% if clients_list %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Clients</h3>
+    </div>
+    
+    <table class="table table-striped">
+        <tbody>
+        {% for client in clients_list %}
+            <tr>
+                <th>
+                    <span class="col-md-8">
+                        <a href="{% url 'work:clients_detail' client.id %}">{{ client.first_name }} {{ client.last_name }}</a></span>
+                    <span class="col-md-2 text-muted">Open Balance: {{ client.projects_total}}</span>
+                    <span class="col-md-2">
+                        <a href=" {% url 'work:clients_update' client.id %}">edit</a>  
+                        <a href=" {% url 'work:clients_delete' client.id %}">delete</a></span>
+                </th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p> No client available.</p>
+{% endif %}
+</div>
+{% endblock %} 

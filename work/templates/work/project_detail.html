@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href=" {% url 'work:project_update' project.project_id %}">Edit Project</a> <a href=" {% url 'work:project_delete' project.project_id %}">delete</a>
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<br />
+
+
+<div class="row">
+    <div class="col-md-6">
+        <a href=" {% url 'work:clients_detail' project.client.id %}"><h1>{{project.client.first_name}} {{project.client.last_name}}</a><small>  {{ project.name }}</small></h1>
+        <h4>Start Date: {{project.create_date}}</h4>
+        <h4>Due Date: {{project.due_date}}</h4>
+        <h4>Deposit: {{project.deposit}}%</h4>
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right">
+            <h2>Job #{{ project.project_id }}</h2>
+            <h4 class="text-muted status">Status: {{ project.get_status_display }}</h4>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ project_form.non_field_errors }}
+                
+                <div class="form-actions">
+                    <div class="form-group">
+                        {{ status_form.status.as_hidden }}
+                    </div>
+                    <input class="btn btn-primary btn-block status-button" type="submit" value="Convert to Work Order" />
+                 </div>
+            </form>        
+        </div>
+    </div>
+</div>    
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Line Items</h3>
+    </div>
+<table class="table table-striped">
+    <tr>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lineitem in lineitems %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ lineitem.name }}</td>
+                <td>{{ lineitem.description }}</td>
+                <td>{{ lineitem.price }}</td>
+                <td>{{ lineitem.quantity }}</td>
+                <td>{{ lineitem.tallys.total }}</td>
+                
+            </tr>
+            {% endfor %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Subtotal</td>
+                <td>{{project.sub_total}}</td>
+            </tr>
+            {% if project.discount > 0 %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>(-{{project.discount}}%) Discount:</td>
+                <td>{{ project.cash_discount }}</td>
+            </tr>            
+            {% endif %}
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Tax</td>
+                <td>{{project.tax}}</td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td>{{project.total}}</td>
+            </tr>
+        </tbody>
+</table>
+</div>
+
+<script>
+$(function() {
+  var status = $(".status").text();
+  var status = status.substring(8);
+  if (status == 'Quote') {
+  $('input.status-button').val('Convert to Work Order');
+};
+  if (status == 'Work Order') {
+  $('input.status-button').val('Close Job');
+};
+  if (status == 'Complete') {
+  $('input.status-button').val('Reopen Job');
+};
+});
+</script>
+
+{% endblock %} 

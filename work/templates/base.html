@@ -1,0 +1,60 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="{% static 'javascript/jquery.formset.js' %}"></script>
+        <script src="{% static 'javascript/menu-sort.js' %}"></script>
+        
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+        
+        <title>Project Wide Base Template Loaded</title>
+    </head>
+<body>
+
+
+<header class="navbar navbar-inverse" role="banner">
+<div class="container">
+    <nav role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href=""/work/projects"">Fabco Job System</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'work:quote_index' %}">Quotes</a></li>
+                    <li><a href="{% url 'work:work_order_index' %}">Work Orders</a></li>
+                    <li><a href="{% url 'work:complete_index' %}">Completed</a></li>                                        
+                    <li><a href="{% url 'work:project_create' %}">Create Project</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clients <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'work:client_index' %}">Client Index</a></li>
+                    <li><a href="{% url 'work:client_create' %}">Create Client</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>   
+</header>  
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

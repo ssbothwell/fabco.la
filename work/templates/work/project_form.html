@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load addcss %}
+
+<h1>Create Project Form</h1>
+
+<form id="myForm" action="" method="post">
+{% csrf_token %}
+{{ project_form.non_field_errors }}
+
+
+<div class="form-group col-md-6">
+    <div class="form-group">
+        <label for="Client" class="control-label">Client</label>    
+        {{ project_form.client|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="Project Name" class="control-label">Project Name</label>    
+        {{ project_form.name|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="Due Date" class="control-label">Due Date</label>    
+        
+        <div class="input-group">
+        {{ project_form.due_date|addcss:"form-control datepicker" }}
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar "></span></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Confirmed" class="control-label">Status</label>    
+        {{ project_form.status|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="Deposit" class="control-label">Deposit</label>    
+        {{ project_form.deposit|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="Discount" class="control-label">Discount</label>    
+        {{ project_form.discount|addcss:"form-control" }}
+    </div>
+</div>
+<br />
+
+
+<table class="table table-striped">
+    <tr>
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Taxable</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="lineitems">
+            {% for lineitem in lineitem_formset %}
+            <tr id="{{ lineitem.prefix}}-row">
+                {{lineitem.id}}
+                <td><span class="glyphicon glyphicon-sort">{{lineitem.order.as_hidden}}</span></td>
+                <td>{% if lineitem.instance.pk %}{{ lineitem.DELETE }}{% endif %}
+                    {{ lineitem.name }}</td>
+                <td>{{ lineitem.description }}</td>
+                <td>{{ lineitem.price }}</td>
+                <td>{{ lineitem.quantity }}</td>
+                <td>{{ lineitem.taxable }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{{lineitem_formset.management_form}}
+
+<div id="test">
+</div>
+    <div class="form-actions">
+        <input class="btn btn-primary" type="submit" value="Save" />
+     </div>
+</form>
+
+<script type="text/javascript">
+    $(function() {
+        $('#lineitems tr').formset({
+            prefix: 'line_item',
+            deleteCssClass: 'glyphicon glyphicon-trash',
+            addCssClass: 'glyphicon glyphicon-plus',
+            deleteText: '',
+            addText: 'New Item'   
+        })
+    })
+</script>
+<script>
+$(function() {
+  $( ".datepicker" ).datepicker();
+});
+</script>
+{% endblock %} 
+
+
