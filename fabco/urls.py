@@ -19,7 +19,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import views
 
 urlpatterns = [
-    url(r'^$', lambda r: HttpResponseRedirect('work/')),
+    url(r'', include('work.urls')),    
     url(r'^work/', include('work.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),
