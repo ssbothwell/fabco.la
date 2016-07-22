@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'fabco.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fabcouser',
+        'NAME': 'fabco',
         'USER': 'fabcouser',
         'PASSWORD': 'B9btQ#?fZR%j3F',
         'HOST': 'localhost',
