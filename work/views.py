@@ -94,12 +94,13 @@ def PrintPdfView(request, pk):
  
     report = MyPrint(buffer, 'Letter', pk)
     if project.status == 'QT':
-        response['Content-Disposition'] = 'attachment; filename="%s-Quote-%s.pdf"' % (project.client, project.project_id)
+        response['Content-Disposition'] = 'inline; filename="%s-Quote-%s.pdf"' % (project.client, project.project_id)
         pdf = report.print_quote()
     else:
-        response['Content-Disposition'] = 'attachment; filename="%s-WorkOrder-%s.pdf"' % (project.client, project.project_id)
+        response['Content-Disposition'] = 'inline; filename="%s-WorkOrder-%s.pdf"' % (project.client, project.project_id)
         pdf = report.print_work_order()    
- 
+        
+    
     response.write(pdf)
     return response
 

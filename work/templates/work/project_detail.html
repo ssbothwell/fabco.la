@@ -26,7 +26,7 @@
                 <li><a href="#"><a id="convert" onclick="document.getElementById('myform').submit();">Convert</a></a></li>
                 <li><a href="#"><a href="{% url 'work:project_pdf' project.project_id %}">Print PDF</a></a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#"><a href=" {% url 'work:project_delete' project.project_id %}">delete</a></a></li>
+                <li><a href="#"><a href=" {% url 'work:project_delete' project.project_id %}">Delete</a></a></li>
               </ul>
             </div>
             <h2>Job #{{ project.project_id }}</h2>
