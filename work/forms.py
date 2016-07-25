@@ -49,7 +49,7 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = ['client', 'due_date', 'name', 'status', 'discount','deposit']
-
+    
 
 class ProjectStatusForm(ModelForm):
     class Meta:
@@ -61,6 +61,11 @@ class LineItemForm(ModelForm):
     class Meta:
         model = LineItem
         fields = ['order', 'name', 'description', 'price', 'quantity', 'taxable',]
+        widgets = {
+            'description': forms.Textarea(attrs={'cols': 40, 'rows': 2}),
+            'price': forms.TextInput(attrs={'size':'10'}),
+            'quantity': forms.TextInput(attrs={'size':'10'}),            
+        }
         
    
 LineItemFormSet = inlineformset_factory(Project, LineItem, form=LineItemForm, can_delete=True, extra=1)

@@ -6,6 +6,7 @@ from . import views
 app_name = 'work'
 urlpatterns = [
     url(r'^$', lambda r: HttpResponseRedirect('projects/work_orders')),
+    url(r'^projects/(?P<pk>[0-9]+)/pdf/$', views.PrintPdfView, name="project_pdf"),
     url(r'^projects/complete$', views.ProjectIndexView, {'status': 'CO'}, name='complete_index'), 
     url(r'^projects/work_orders$', views.ProjectIndexView, {'status': 'WO'}, name='work_order_index'), 
     url(r'^projects/quotes$', views.ProjectIndexView, {'status': 'QT'}, name='quote_index'), 

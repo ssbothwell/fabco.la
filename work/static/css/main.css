@@ -1,3 +1,7 @@
+tbody textarea {
+    resize: vertical;
+}
+
 .darkBG {
     background: #999;
 }

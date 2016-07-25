@@ -28,7 +28,11 @@
                     </div>
                     <input class="btn btn-primary btn-block status-button" type="submit" value="Convert to Work Order" />
                  </div>
-            </form>        
+            </form>
+            <form action="{% url 'work:project_pdf' project.project_id %}">
+            <div class="form-actions">
+                <input class="btn btn-primary btn-block" type="submit" value="Generate PDF" />
+             </div>        
         </div>
     </div>
 </div>    

@@ -2,7 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from io import BytesIO
 
+from work.printing import MyPrint
 from .models import Client, Project, LineItem, ClientAddress
 from .forms import *
 
@@ -80,6 +83,25 @@ def ProjectUpdateView(request, pk):
             'project_form': project_form,
             'lineitem_formset': lineitem_formset,
         })
+
+@login_required(login_url='/login/')    
+def PrintPdfView(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+ 
+    buffer = BytesIO()
+ 
+    report = MyPrint(buffer, 'Letter', pk)
+    if project.status == 'QT':
+        response['Content-Disposition'] = 'attachment; filename="%s-Quote-%s.pdf"' % (project.client, project.project_id)
+        pdf = report.print_quote()
+    else:
+        response['Content-Disposition'] = 'attachment; filename="%s-WorkOrder-%s.pdf"' % (project.client, project.project_id)
+        pdf = report.print_work_order()    
+ 
+    response.write(pdf)
+    return response
 
 
 @login_required(login_url='/login/')    
