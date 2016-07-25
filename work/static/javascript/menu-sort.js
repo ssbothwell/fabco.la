@@ -1,5 +1,6 @@
 jQuery(function($) {
     $('.table tbody').sortable({
+        axis: "y",
         items: 'tr',
         handle: '.glyphicon-sort',
         update: function(){
