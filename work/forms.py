@@ -23,7 +23,7 @@ class ClientForm(ModelForm):
                 'email',
         )
         self.helper.form_id = 'id-ClientForm'
-        self.helper.form_class = 'blueForms'
+        #self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_client'
         self.helper.form_tag = False
@@ -38,7 +38,7 @@ class ClientAddressForm(ModelForm):
         super(ClientAddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-ClientForm'
-        self.helper.form_class = 'blueForms'
+        #self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_client'
         self.helper.form_tag = False        

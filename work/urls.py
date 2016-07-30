@@ -19,5 +19,4 @@ urlpatterns = [
     url(r'^clients/create/$', views.ClientCreateView, name='client_create'),
     url(r'^clients/(?P<pk>[0-9]+)/update/$', views.ClientUpdateView, name='clients_update'),
     url(r'^clients/(?P<pk>[0-9]+)/delete/$', views.ClientDeleteView, name='clients_delete'),
-
 ]

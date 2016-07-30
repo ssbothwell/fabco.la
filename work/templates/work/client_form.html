@@ -3,16 +3,20 @@
 {% block content %}
 {% load addcss %}
 
-<div class="row">
-    <div class="col-sm-6 col-md-3">
-        <form action="" class="form-horizontal" method="POST">{% csrf_token %}            
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Create Client</h3>
+    </div>
+    <div class="panel-body">
+        <form action="" method="POST">
+            {% csrf_token %}            
             {{ client_form.non_field_errors }}
             {% crispy client_form %}
             {% crispy address_form %}
-
         </form>
     </div>
-
-    
 </div>
+
+
+
 {% endblock %} 
