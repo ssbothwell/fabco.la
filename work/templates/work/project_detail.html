@@ -15,7 +15,7 @@
             <h4>Due Date: {{project.due_date}}</h4>
             <h4>Deposit: {{project.deposit}}%</h4>
         </div>
-        <div class="pull-right">
+        <div class="pull-right text-right">
             <div class="dropdown">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Actions
@@ -53,11 +53,11 @@
                 {% for lineitem in lineitems %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ lineitem.name }}</td>
-                    <td>{{ lineitem.description }}</td>
-                    <td>{{ lineitem.price }}</td>
-                    <td>{{ lineitem.quantity }}</td>
-                    <td>{{ lineitem.tallys.total }}</td>
+                    <td class="col-md-2">{{ lineitem.name }}</td>
+                    <td class="col-md-7">{{ lineitem.description }}</td>
+                    <td class="col-md-1">{{ lineitem.price }}</td>
+                    <td class="col-md-1">{{ lineitem.quantity }}</td>
+                    <td class="col-md-1">{{ lineitem.tallys.total }}</td>
                     
                 </tr>
                 {% endfor %}

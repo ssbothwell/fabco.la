@@ -1,4 +1,6 @@
 from django.contrib import admin
+#from attachments.admin import AttachmentInlines
+
 
 from .models import Client, Project, LineItem, ClientAddress
 
@@ -8,6 +10,7 @@ class LineItemInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     inlines = [
         LineItemInline,
+        #AttachmentInlines,
     ]
 
 admin.site.register(Client)

@@ -102,7 +102,7 @@ class MyPrint:
         # Parse lineitems and put into list [(name, description2),(name2, description2)]
         data = [('Name', 'Description', 'Unit Cost', 'Quantity', 'Total')]
         for lineitem in lineitems:
-            item = (lineitem.name, Paragraph(lineitem.description, stylesheet['Normal']), '$' + str(lineitem.price), lineitem.quantity, lineitem.tallys['total'])
+            item = (Paragraph(lineitem.name, stylesheet['Normal']), Paragraph(lineitem.description, stylesheet['Normal']), '$' + str(lineitem.price), lineitem.quantity, lineitem.tallys['total'])
             data.append(item)
         
         totalsData = [('','','','Sub-Total', project.sub_total),('','','','Tax', project.tax), ('','','','Total', project.total)]
@@ -158,7 +158,7 @@ class MyPrint:
         # Parse lineitems and put into list [(name, description2),(name2, description2)]
         data = [('Name', 'Description', 'Quantity')]
         for lineitem in lineitems:
-            item = (lineitem.name, Paragraph(lineitem.description, stylesheet['Normal']), lineitem.quantity)
+            item = (Paragraph(lineitem.name, stylesheet['Normal']), Paragraph(lineitem.description, stylesheet['Normal']), lineitem.quantity)
             data.append(item)
     
         

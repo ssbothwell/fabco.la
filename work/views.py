@@ -79,6 +79,7 @@ def ProjectUpdateView(request, pk):
         return redirect('work:project_detail', project.pk)
     else:
         obj1 = ProjectForm(instance=project)
+        
     return render(request, 'work/project_form.html', {
             'project_form': project_form,
             'lineitem_formset': lineitem_formset,
