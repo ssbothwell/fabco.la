@@ -91,7 +91,7 @@ class Project(models.Model):
 class LineItem(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='line_item')
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     quantity = models.PositiveIntegerField(null=True)
     taxable = models.BooleanField(default=True)    
