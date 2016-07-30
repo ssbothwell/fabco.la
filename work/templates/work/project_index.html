@@ -26,6 +26,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Client</th>
                 <th>Total</th>
                 <th>Due Date</th>
             </tr>
@@ -35,6 +36,7 @@
             <tr>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.project_id }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></th>
+                <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.client.first_name }} {{ project.client.last_name }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date }}</a></th>
             </tr>
