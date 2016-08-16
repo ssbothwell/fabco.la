@@ -10,7 +10,8 @@ from crispy_forms.layout import Submit, Layout
 class ClientForm(ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'phone_number',]
+
 
 
     def __init__(self, *args, **kwargs):
@@ -57,8 +58,20 @@ class ProjectStatusForm(ModelForm):
         fields = ['status']
 
 
+NameChoices = (
+('Strainer Bar', 'Strainer Bar'),
+('Stretching Fee', 'Stretching Fee'),
+('Pedestal', 'Pedestal'),
+('Framing', 'Framing'),
+('Crating', 'Crating'),
+('Custom', 'Custom'),
+) 
+
 class LineItemForm(ModelForm):
+    
+    #name = forms.ChoiceField(choices=NameChoices, required=True)
     class Meta:
+        
         model = LineItem
         fields = ['order', 'name', 'description', 'price', 'quantity', 'taxable',]
         widgets = {
@@ -66,6 +79,6 @@ class LineItemForm(ModelForm):
             'price': forms.TextInput(attrs={'size':'10'}),
             'quantity': forms.TextInput(attrs={'size':'10'}),            
         }
-        
+       
    
-LineItemFormSet = inlineformset_factory(Project, LineItem, form=LineItemForm, can_delete=True, extra=1)
+LineItemFormSet = inlineformset_factory(Project, LineItem, form=LineItemForm, can_order=True, can_delete=True, extra=1)

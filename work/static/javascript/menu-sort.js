@@ -5,7 +5,7 @@ jQuery(function($) {
         handle: '.glyphicon-sort',
         update: function(){
             $(this).find('tr').each(function(i) {
-                if ($(this).find('input[id$=name]').val()) {
+                if ($(this).find('input[id$=id]').val()) {
                     $(this).find('input[id$=order]').val(i+1);
                 }
             });            

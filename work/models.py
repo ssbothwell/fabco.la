@@ -88,9 +88,19 @@ class Project(models.Model):
     def __str__(self):
             return self.name
                 
+
+NameChoices = (
+('Strainer Bar', 'Strainer Bar'),
+('Stretching Fee', 'Stretching Fee'),
+('Pedestal', 'Pedestal'),
+('Framing', 'Framing'),
+('Crating', 'Crating'),
+('Custom', 'Custom'),
+)                
+                
 class LineItem(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='line_item')
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=15, choices=NameChoices)
     description = models.CharField(max_length=200, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     quantity = models.PositiveIntegerField(null=True)
