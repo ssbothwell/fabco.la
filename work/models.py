@@ -92,9 +92,11 @@ class Project(models.Model):
 NameChoices = (
 ('Strainer Bar', 'Strainer Bar'),
 ('Stretching Fee', 'Stretching Fee'),
+('Panel', 'Panel'),
 ('Pedestal', 'Pedestal'),
 ('Framing', 'Framing'),
 ('Crating', 'Crating'),
+('Welding', 'Welding'),
 ('Custom', 'Custom'),
 )                
                 
