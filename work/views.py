@@ -14,7 +14,7 @@ from .forms import *
 @login_required(login_url='/login/')
 def ProjectIndexView(request, status):
     """ Display an Index of Projects"""
-    projects_list = Project.objects.filter(status=status).order_by('create_date')
+    projects_list = Project.objects.filter(status=status).order_by('due_date')
     status = status
     context = { 
     'projects_list': projects_list,
@@ -125,7 +125,7 @@ def ProjectDeleteView(request, pk):
 
 @login_required(login_url='/login/')
 def ClientIndex(request):
-    clients_list = Client.objects.all()
+    clients_list = Client.objects.all().order_by('first_name')
     context = { 
     'clients_list': clients_list,
     }
