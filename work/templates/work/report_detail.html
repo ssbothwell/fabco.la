@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Quarterly Tax Totals</h3>
+            </div>
+        <ul class="list-group">
+          <li class="list-group-item">January - March: <span class="pull-right">${{ Quarterlies.quarterOne }}</span></li>
+          <li class="list-group-item">April - June: <span class="pull-right">${{ Quarterlies.quarterTwo }}</span></li>
+          <li class="list-group-item">July - September: <span class="pull-right">${{ Quarterlies.quarterThree }}</span></li>
+          <li class="list-group-item">October - December: <span class="pull-right">${{ Quarterlies.quarterFour }}</span></li>
+        </ul>
+        
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Monthly Tallys</h3>
+            </div>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Jan</th>
+                    <th>Feb</th>
+                    <th>Mar</th>
+                    <th>Apr</th>
+                    <th>May</th>
+                    <th>Jun</th>
+                    <th>Jul</th>
+                    <th>Aug</th>
+                    <th>Sep</th>
+                    <th>Oct</th>
+                    <th>Nov</th>
+                    <th>Dec</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Strainer Bars</th>
+                    <td>${{MonthlyStats.January.strainerBars}}</td>
+                    <td>${{MonthlyStats.February.strainerBars}}</td>
+                    <td>${{MonthlyStats.March.strainerBars}}</td>
+                    <td>${{MonthlyStats.April.strainerBars}}</td>
+                    <td>${{MonthlyStats.May.strainerBars}}</td>
+                    <td>${{MonthlyStats.June.strainerBars}}</td>
+                    <td>${{MonthlyStats.July.strainerBars}}</td>
+                    <td>${{MonthlyStats.August.strainerBars}}</td>
+                    <td>${{MonthlyStats.September.strainerBars}}</td>
+                    <td>${{MonthlyStats.October.strainerBars}}</td>
+                    <td>${{MonthlyStats.November.strainerBars}}</td>
+                    <td>${{MonthlyStats.December.strainerBars}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Stretching Fees</th>
+                    <td>${{MonthlyStats.January.stretchingFee}}</td>
+                    <td>${{MonthlyStats.February.stretchingFee}}</td>
+                    <td>${{MonthlyStats.March.stretchingFee}}</td>
+                    <td>${{MonthlyStats.April.stretchingFee}}</td>
+                    <td>${{MonthlyStats.May.stretchingFee}}</td>
+                    <td>${{MonthlyStats.June.stretchingFee}}</td>
+                    <td>${{MonthlyStats.July.stretchingFee}}</td>
+                    <td>${{MonthlyStats.August.stretchingFee}}</td>
+                    <td>${{MonthlyStats.September.stretchingFee}}</td>
+                    <td>${{MonthlyStats.October.stretchingFee}}</td>
+                    <td>${{MonthlyStats.November.stretchingFee}}</td>
+                    <td>${{MonthlyStats.December.stretchingFee}}</td>
+                </tr> 
+                <tr>
+                    <th scope="row">Panels</th>
+                    <td>${{MonthlyStats.January.panels}}</td>
+                    <td>${{MonthlyStats.February.panels}}</td>
+                    <td>${{MonthlyStats.March.panels}}</td>
+                    <td>${{MonthlyStats.April.panels}}</td>
+                    <td>${{MonthlyStats.May.panels}}</td>
+                    <td>${{MonthlyStats.June.panels}}</td>
+                    <td>${{MonthlyStats.July.panels}}</td>
+                    <td>${{MonthlyStats.August.panels}}</td>
+                    <td>${{MonthlyStats.September.panels}}</td>
+                    <td>${{MonthlyStats.October.panels}}</td>
+                    <td>${{MonthlyStats.November.panels}}</td>
+                    <td>${{MonthlyStats.December.panels}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Pedestals</th>
+                    <td>${{MonthlyStats.January.pedestals}}</td>
+                    <td>${{MonthlyStats.February.pedestals}}</td>
+                    <td>${{MonthlyStats.March.pedestals}}</td>
+                    <td>${{MonthlyStats.April.pedestals}}</td>
+                    <td>${{MonthlyStats.May.pedestals}}</td>
+                    <td>${{MonthlyStats.June.pedestals}}</td>
+                    <td>${{MonthlyStats.July.pedestals}}</td>
+                    <td>${{MonthlyStats.August.pedestals}}</td>
+                    <td>${{MonthlyStats.September.pedestals}}</td>
+                    <td>${{MonthlyStats.October.pedestals}}</td>
+                    <td>${{MonthlyStats.November.pedestals}}</td>
+                    <td>${{MonthlyStats.December.pedestals}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Framing</th>
+                    <td>${{MonthlyStats.January.framing}}</td>
+                    <td>${{MonthlyStats.February.framing}}</td>
+                    <td>${{MonthlyStats.March.framing}}</td>
+                    <td>${{MonthlyStats.April.framing}}</td>
+                    <td>${{MonthlyStats.May.framing}}</td>
+                    <td>${{MonthlyStats.June.framing}}</td>
+                    <td>${{MonthlyStats.July.framing}}</td>
+                    <td>${{MonthlyStats.August.framing}}</td>
+                    <td>${{MonthlyStats.September.framing}}</td>
+                    <td>${{MonthlyStats.October.framing}}</td>
+                    <td>${{MonthlyStats.November.framing}}</td>
+                    <td>${{MonthlyStats.December.framing}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Crating</th>
+                    <td>${{MonthlyStats.January.crating}}</td>
+                    <td>${{MonthlyStats.February.crating}}</td>
+                    <td>${{MonthlyStats.March.crating}}</td>
+                    <td>${{MonthlyStats.April.crating}}</td>
+                    <td>${{MonthlyStats.May.crating}}</td>
+                    <td>${{MonthlyStats.June.crating}}</td>
+                    <td>${{MonthlyStats.July.crating}}</td>
+                    <td>${{MonthlyStats.August.crating}}</td>
+                    <td>${{MonthlyStats.September.crating}}</td>
+                    <td>${{MonthlyStats.October.crating}}</td>
+                    <td>${{MonthlyStats.November.crating}}</td>
+                    <td>${{MonthlyStats.December.crating}}</td>
+                </tr>                                                                    
+                <tr>
+                    <th scope="row">Welding</th>
+                    <td>${{MonthlyStats.January.welding}}</td>
+                    <td>${{MonthlyStats.February.welding}}</td>
+                    <td>${{MonthlyStats.March.welding}}</td>
+                    <td>${{MonthlyStats.April.welding}}</td>
+                    <td>${{MonthlyStats.May.welding}}</td>
+                    <td>${{MonthlyStats.June.welding}}</td>
+                    <td>${{MonthlyStats.July.welding}}</td>
+                    <td>${{MonthlyStats.August.welding}}</td>
+                    <td>${{MonthlyStats.September.welding}}</td>
+                    <td>${{MonthlyStats.October.welding}}</td>
+                    <td>${{MonthlyStats.November.welding}}</td>
+                    <td>${{MonthlyStats.December.welding}}</td>
+                </tr>                  
+                <tr>
+                    <th scope="row">Custom</th>
+                    <td>${{MonthlyStats.January.custom}}</td>
+                    <td>${{MonthlyStats.February.custom}}</td>
+                    <td>${{MonthlyStats.March.custom}}</td>
+                    <td>${{MonthlyStats.April.custom}}</td>
+                    <td>${{MonthlyStats.May.custom}}</td>
+                    <td>${{MonthlyStats.June.custom}}</td>
+                    <td>${{MonthlyStats.July.custom}}</td>
+                    <td>${{MonthlyStats.August.custom}}</td>
+                    <td>${{MonthlyStats.September.custom}}</td>
+                    <td>${{MonthlyStats.October.custom}}</td>
+                    <td>${{MonthlyStats.November.custom}}</td>
+                    <td>${{MonthlyStats.December.custom}}</td>
+                </tr>                  
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">    
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">January</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">Strainer Bars: <span class="pull-right">${{MonthlyStats.January.strainerBars}}</span></li>
+                <li class="list-group-item">Panels: <span class="pull-right">${{MonthlyStats.January.panels}}</span></li>
+                <li class="list-group-item">Stretching Fee: <span class="pull-right">${{MonthlyStats.January.stretchingFee}}</span></li>
+                <li class="list-group-item">Pedestals: <span class="pull-right">${{MonthlyStats.January.pedestals}}</span></li>
+                <li class="list-group-item">Framing: <span class="pull-right">${{MonthlyStats.January.framing}}</span></li>
+                <li class="list-group-item">Crating: <span class="pull-right">${{MonthlyStats.January.crating}}</span></li>
+                <li class="list-group-item">Welding: <span class="pull-right">${{MonthlyStats.January.welding}}</span></li>
+                <li class="list-group-item">Custom: <span class="pull-right">${{MonthlyStats.January.custom}}</span></li>
+            </ul>
+        
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">February</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">Strainer Bars:</li>
+                <li class="list-group-item">Panels:</li>
+                <li class="list-group-item">Stretching Fee:</li>
+                <li class="list-group-item">Pedestals:</li>
+                <li class="list-group-item">Framing:</li>
+                <li class="list-group-item">Crating:</li>
+                <li class="list-group-item">Welding:</li>
+                <li class="list-group-item">Custom:</li>
+            </ul>
+        
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">March</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">Strainer Bars:</li>
+                <li class="list-group-item">Panels:</li>
+                <li class="list-group-item">Stretching Fee:</li>
+                <li class="list-group-item">Pedestals:</li>
+                <li class="list-group-item">Framing:</li>
+                <li class="list-group-item">Crating:</li>
+                <li class="list-group-item">Welding:</li>
+                <li class="list-group-item">Custom:</li>
+            </ul>
+        
+        </div>
+    </div>    
+</div>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% endblock %} 

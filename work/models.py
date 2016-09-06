@@ -131,7 +131,20 @@ class LineItem(models.Model):
         
         return tallys
     tallys = property(_get_tallys)
-
+    
+    def _get_total(self):
+        """ Return just the lineitem total """
+        item_total = Decimal((self.price * self.quantity))
+        cash_discount = Decimal(0.00)
+        
+        if self.project.discount > 0:
+           cash_discount = item_total * ( Decimal(self.project.discount) / 100 )    
+        
+        final_total = item_total - cash_discount
+        
+        return final_total
+    total = property(_get_total)
+    
     def __str__(self):
             return self.name
             

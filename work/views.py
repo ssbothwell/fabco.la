@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from io import BytesIO
+from datetime import date
 
 from work.printing import MyPrint
 from .models import Client, Project, LineItem, ClientAddress
@@ -13,7 +14,7 @@ from .forms import *
 @login_required(login_url='/login/')
 def ProjectIndexView(request, status):
     """ Display an Index of Projects"""
-    projects_list = Project.objects.filter(status=status)
+    projects_list = Project.objects.filter(status=status).order_by('create_date')
     status = status
     context = { 
     'projects_list': projects_list,
@@ -30,6 +31,7 @@ def ProjectDetailView(request, pk):
     if status_form.is_valid():
         if project.status == 'WO':
             project.status = 'CO'
+            project.completion_date = date.today()
         elif project.status == 'QT':
             project.status = 'WO'
         elif project.status == 'CO':
@@ -192,4 +194,103 @@ def ClientDeleteView(request, pk):
 
     return redirect('work:client_index')
 
+   
+@login_required(login_url='/login/')
+def ReportView(request):
+    projects = Project.objects.filter(status='CO')
     
+    p1 = Project.objects.filter(completion_date__range=["2016-01-01", "2016-12-31"])
+    
+    quarterOne = 0
+    quarterTwo = 0
+    quarterThree = 0
+    quarterFour = 0
+    
+    for p in projects: 
+        if date(2016,01,01) <= p.completion_date <= date(2016,3,31):
+            quarterOne += p.tax
+        if date(2016,04,01) <= p.completion_date <= date(2016,6,30):
+            quarterTwo += p.tax
+        if date(2016,07,01) <= p.completion_date <= date(2016,9,30):
+            quarterThree += p.tax        
+        if date(2016,10,01) <= p.completion_date <= date(2016,12,31):
+            quarterFour += p.tax
+
+
+    
+    Quarterlies = {
+                    "quarterOne": quarterOne,
+                    "quarterTwo": quarterTwo,
+                    "quarterThree": quarterThree,
+                    "quarterFour": quarterFour,
+                }
+
+
+
+    # These month strings are just filler, shouldn't be necessary but idk a better way
+    months = [ 'null', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
+    
+    # Replace filler month strings with lineItem type dict for each month
+    for int in range(1, 13):
+        months[int] = { 
+                    'strainerBars': 0,
+                    'panels': 0,
+                    'stretchingFee': 0,
+                    'pedestals': 0,
+                    'framing': 0,
+                    'crating': 0,
+                    'welding': 0,
+                    'custom': 0,
+                    }
+    
+    
+        
+    
+    # Loop through months and for each month loop through lineItems completed in that month and aggregate them into the months list
+    for month in range (1, 13):
+        lineItems = LineItem.objects.filter(project__completion_date__year=2016, project__completion_date__month=month)
+        for item in lineItems:
+            if item.name == "Strainer Bar":
+                months[month]['strainerBars'] += (item.tallys['total'] -  item.tallys['discount'])
+            if item.name == "Panel":
+                months[month]['panels'] += item.tallys['total'] -  item.tallys['discount']
+            if item.name == "Stretching Fee":
+                months[month]['stretchingFee'] += item.tallys['total'] -  item.tallys['discount']
+            if item.name == "Pedestal":
+                months[month]['pedestals'] += item.tallys['total'] -  item.tallys['discount']
+            if item.name == "Framing":
+                months[month]['framing'] += item.tallys['total'] -  item.tallys['discount']
+            if item.name == "crating":
+                months[month]['crating'] += item.tallys['total'] -  item.tallys['discount']  
+            if item.name == "welding":
+                months[month]['welding'] += item.tallys['total'] -  item.tallys['discount']
+            if item.name == "custom":
+                months[month]['custom'] += item.tallys['total'] -  item.tallys['discount']
+            
+            
+    
+    # Kinda dumb but it works way of naming the nested dicts in the month list
+    MonthlyStats = {
+            "January": months[1],
+            "February": months[2],
+            "March": months[3],
+            "April": months[4],
+            "May": months[5],
+            "June": months[6],
+            "July": months[7],
+            "August": months[8],
+            "September": months[9],
+            "October": months[10],
+            "November": months[11],
+            "December": months[12],
+    }
+    
+    
+    
+    context = {
+             'projects': projects,
+             'Quarterlies': Quarterlies,
+             'MonthlyStats': MonthlyStats,
+    }
+    
+    return render(request, 'work/report_detail.html', context)
