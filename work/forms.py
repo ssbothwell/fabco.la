@@ -10,8 +10,7 @@ from crispy_forms.layout import Submit, Layout
 class ClientForm(ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'email', 'phone_number',]
-
+        fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number',]
 
 
     def __init__(self, *args, **kwargs):
@@ -20,6 +19,7 @@ class ClientForm(ModelForm):
         self.helper.layout = Layout(
                 'first_name',
                 'last_name',
+                'company_name',
                 'phone_number',
                 'email',
         )
@@ -28,7 +28,23 @@ class ClientForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_client'
         self.helper.form_tag = False
-               
+    
+    def clean(self):
+        cleaned_data = super(ClientForm, self).clean()     
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+        company_name = cleaned_data.get('company_name')
+        
+        if not company_name:
+            if not first_name and not last_name and not company_name:
+                msg = "You must enter First Name/Last Name or Company Name."
+                self.add_error('first_name', '')
+                self.add_error('last_name', '')
+                self.add_error('company_name', msg)
+                 
+        #return self.cleaned_data 
+            
+            
 
 class ClientAddressForm(ModelForm):
     class Meta:

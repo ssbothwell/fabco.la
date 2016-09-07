@@ -26,7 +26,13 @@
                 <tr>
                     <th>
                         <span class="col-md-8">
-                            <a href="{% url 'work:clients_detail' client.id %}">{{ client.first_name }} {{ client.last_name }}</a></span>
+                            <a href="{% url 'work:clients_detail' client.id %}">
+                                {% if client.first_name %}
+                                {{ client.first_name }} {{ client.last_name }}
+                                {% else %}
+                                {{client.company_name}}
+                                {% endif %}
+                            </a></span>
                         <span class="col-md-2 text-muted">Open Balance: {{ client.projects_total}}</span>
                         <span class="col-md-2">
                             <a href=" {% url 'work:clients_update' client.id %}">edit</a>  
