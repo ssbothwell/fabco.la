@@ -98,6 +98,7 @@ NameChoices = (
 ('Framing', 'Framing'),
 ('Crating', 'Crating'),
 ('Welding', 'Welding'),
+('Delivery', 'Delivery'),
 ('Custom', 'Custom'),
 )                
                 

@@ -4,8 +4,54 @@ from django.forms.models import inlineformset_factory
 from django.forms import extras
 from .models import Client, ClientAddress, Project, LineItem
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
+from crispy_forms.layout import Submit, Layout, Fieldset, Hidden
 
+
+class StrainerForm(forms.Form): #Note that it is not inheriting from forms.ModelForm
+
+    xDim = forms.FloatField(
+        label = "Horizontal Dimension (inches)",
+        required = True,
+    )
+
+    yDim = forms.FloatField(
+        label = "Vertical Dimension (inches)",
+        required = True,
+    )
+
+    thickness = forms.FloatField(
+        label = "Bar Thickness",
+        required = True,
+        initial = '1.25',
+    )
+    
+    quantity = forms.IntegerField(
+        label = "Strainer Quantity",
+        required = True,
+        initial = '1',
+    )
+    
+    fourQuarter = forms.IntegerField(
+        label = "4/4 Board Length",
+        required = True,
+        initial = '10',
+    )
+    
+    nineQuarter = forms.IntegerField(
+        label = "9/4 Board Length",
+        required = True,
+        initial = '10',
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super(StrainerForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_strainer'
+        
+        self.helper.add_input(Submit('submit', 'Submit'))
 
 class ClientForm(ModelForm):
     class Meta:
@@ -74,18 +120,8 @@ class ProjectStatusForm(ModelForm):
         fields = ['status']
 
 
-NameChoices = (
-('Strainer Bar', 'Strainer Bar'),
-('Stretching Fee', 'Stretching Fee'),
-('Pedestal', 'Pedestal'),
-('Framing', 'Framing'),
-('Crating', 'Crating'),
-('Custom', 'Custom'),
-) 
-
 class LineItemForm(ModelForm):
     
-    #name = forms.ChoiceField(choices=NameChoices, required=True)
     class Meta:
         
         model = LineItem

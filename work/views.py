@@ -6,9 +6,32 @@ from django.http import HttpResponse
 from io import BytesIO
 from datetime import date
 
-from work.printing import MyPrint
+from lib.printing import MyPrint
+from lib.strainerCalc import Strainer
 from .models import Client, Project, LineItem, ClientAddress
 from .forms import *
+
+
+@login_required(login_url='/login/')
+def StrainerCalc(request):
+    if request.method == 'POST':
+        strainer_form = StrainerForm(request.POST)
+        
+        if strainer_form.is_valid():
+            strainerData = strainer_form.cleaned_data
+            
+            strainer = Strainer(strainerData['xDim'], strainerData['yDim'], strainerData['thickness'], strainerData['quantity'], strainerData['fourQuarter'], strainerData['nineQuarter'])
+                        
+            return render(request, 'work/strainer_form.html', {
+                'strainer_form': strainer_form,
+                'strainer': strainer, 
+                 })
+    else:
+        strainer_form = StrainerForm()
+    
+    return render(request, 'work/strainer_form.html', {
+        'strainer_form': strainer_form,
+     })
 
 
 @login_required(login_url='/login/')
