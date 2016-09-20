@@ -54,7 +54,7 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td class="col-md-2">{{ lineitem.name }}</td>
-                    <td class="col-md-7">{{ lineitem.description }}</td>
+                    <td class="col-md-7">{{ lineitem.description|linebreaksbr }}</td>
                     <td class="col-md-1">{{ lineitem.price }}</td>
                     <td class="col-md-1">{{ lineitem.quantity }}</td>
                     <td class="col-md-1">{{ lineitem.tallys.total }}</td>

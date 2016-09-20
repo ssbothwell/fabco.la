@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^clients/(?P<pk>[0-9]+)/update/$', views.ClientUpdateView, name='clients_update'),
     url(r'^clients/(?P<pk>[0-9]+)/delete/$', views.ClientDeleteView, name='clients_delete'),
     url(r'^reports/$', views.ReportView, name='report_view'),
+    url(r'^strainer/$', views.StrainerCalc, name='strainer_calc'),
 
 ]

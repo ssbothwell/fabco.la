@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load addcss %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Strainer Calculator</h3>
+            </div>
+            <div class="panel-body">
+                <form action="" method="POST">            
+                    {{ strainer_form.non_field_errors }}
+                    {% crispy strainer_form %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        {% if strainer %}
+        <div class="panel panel-default">
+            <div class="panel-heading">            
+            </div>
+            <div class="panel-body">
+                        <h4>{{ strainer.quantity }}@{{strainer.x}}x{{strainer.y}}x{{strainer.thickness}}"</h5>
+                        <strong>Rough Milled Sizes:</strong><br />
+                            {{strainer.batchX}}@{{strainer.x}}+ x {{ strainer.roughThickness}} x 2"<br />
+                            {{strainer.batchY}}@{{strainer.y}}+ x {{ strainer.roughThickness}} x 2"<br />
+                            {{ strainer.batchXbraces }}@{{strainer.xBraceLength}}+ x 2.5 x 3/4"<br />
+                            {{ strainer.batchYbraces }}@{{strainer.yBraceLength}}+ x 2.5 x 3/4"<br />
+                    <br />
+                        <strong>Final Dims:</strong><br />
+                            {{strainer.batchX}}@{{strainer.x}} x {{ strainer.thickness }} x 1.75"<br />
+                            {{strainer.batchY}}@{{strainer.y}} x {{ strainer.thickness}} x 1.75"<br />
+                            {{ strainer.batchXbraces }}@{{strainer.xBraceLength}} x 2.25 x 3/4"<br />
+                            {{ strainer.batchYbraces }}@{{strainer.yBraceLength}} x 2.25 x 3/4"<br />
+                    <br />
+                        <strong>Board Feet per Strainer:</strong></br>
+                            9/4: {{strainer.barBF}}<br />
+                            4/4: {{strainer.braceBF}}<br />
+            </div>
+        </div>
+        {% endif %}            
+    </div>
+</div>
+
+{% endblock %} 
