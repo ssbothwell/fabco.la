@@ -164,11 +164,14 @@ class MyPrint:
         # Parse lineitems and put into list [(name, description2),(name2, description2)]
         data = [('Name', 'Description', 'Quantity')]
         for lineitem in lineitems:
-            
-            if len(lineitem.description) > 63:                
-                lineitem.description = textwrap.fill(lineitem.description, 64)
-                
+                            
             lineitem.description = "\n".join(lineitem.description.splitlines())
+            
+            if "\n" not in lineitem.description:
+                if len(lineitem.description) > 63:                
+                    lineitem.description = textwrap.fill(lineitem.description, 64)
+            
+            
             item = (Paragraph(lineitem.name, stylesheet['Normal']), lineitem.description, lineitem.quantity)
             
             data.append(item)
