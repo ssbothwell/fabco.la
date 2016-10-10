@@ -6,7 +6,8 @@ from reportlab.platypus.tables import Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from work.models import Client, Project, LineItem
-import re, textwrap
+import textwrap
+from decimal import *
 
 class MyPrint:
     def __init__(self, buffer, pagesize, pk):
@@ -111,7 +112,7 @@ class MyPrint:
             item = (Paragraph(lineitem.name, stylesheet['Normal']), lineitem.description, '$' + str(lineitem.price), lineitem.quantity, lineitem.tallys['total'])
             data.append(item)
         
-        totalsData = [('','','','Sub-Total', project.sub_total),('','','','Tax', project.tax), ('','','','Total', project.total)]
+        totalsData = [('','','','Sub-Total', project.sub_total),('','','','Discount', ((Decimal(project.discount) / 100) * project.sub_total)),('','','','Tax', project.tax), ('','','','Total', project.total)]
             
         table = Table(data, colWidths=(doc.width/5,2*doc.width/5,0.6667*doc.width/5,0.6667*doc.width/5,0.6667*doc.width/5))
         table.setStyle(TableStyle([('INNERGRID', (0, 1), (-1, -1), 0.25, colors.black),
@@ -122,8 +123,8 @@ class MyPrint:
         totalsTable = Table(totalsData, colWidths=(doc.width/5,2*doc.width/5,0.6667*doc.width/5,0.6667*doc.width/5,0.6667*doc.width/5))
         totalsTable.setStyle(TableStyle([
             ('LINEABOVE',(3,0),(4,0),1,colors.black),
-            ('INNERGRID', (3, 0), (4, 2), 0.25, colors.black),
-            ('BOX', (3, 0), (4, 2), 0.5, colors.black),
+            ('INNERGRID', (3, 0), (4, 3), 0.25, colors.black),
+            ('BOX', (3, 0), (4, 3), 0.5, colors.black),
             ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
             ]))
         
