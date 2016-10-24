@@ -160,11 +160,16 @@ def ClientDetailView(request, pk):
     try:
         client = Client.objects.get(pk=pk)
         projects = client.projects.all()
+        completed = Project.objects.filter(status='CO')
+        quotes = Project.objects.filter(status='QT')
+        work_order = Project.objects.filter(status='WO')
     except Client.DoesNotExist:
         raise Http404("Client does not exist")
     context = {
         'client': client,
-        'projects': projects,
+        'quotes': quotes,
+        'work_order': work_order,
+        'completed': completed,
     }
     return render(request, 'work/client_detail.html', context)
 
