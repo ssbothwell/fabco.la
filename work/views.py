@@ -159,10 +159,9 @@ def ClientIndex(request):
 def ClientDetailView(request, pk):
     try:
         client = Client.objects.get(pk=pk)
-        projects = client.projects.all()
-        completed = Project.objects.filter(status='CO')
-        quotes = Project.objects.filter(status='QT')
-        work_order = Project.objects.filter(status='WO')
+        completed = client.projects.filter(status='CO')
+        quotes = client.projects.filter(status='QT')
+        work_order = client.projects.filter(status='WO')
     except Client.DoesNotExist:
         raise Http404("Client does not exist")
     context = {
