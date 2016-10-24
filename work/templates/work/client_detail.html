@@ -3,7 +3,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h1>{{ client.first_name }} {{ client.last_name }}</h1>
+        {% if client.company_name %} <h1>{{client.company_name}}</h1>
+        {% else %}<h1>{{ client.first_name }} {{ client.last_name }}</h1>
+        {% endif %}
     </div>
 </div>
 
@@ -86,6 +88,38 @@
         </tbody>
     </table>
 </div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Completed</h3>
+    </div>
+
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Total</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for project in projects %}
+            {% if project.status == 'CO' %}
+            <tr>
+                <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.project_id }}</a></th>
+                <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></th>
+                <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></th>
+                <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date }}</a></th>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% endblock %} 
