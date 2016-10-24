@@ -30,12 +30,12 @@
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Work Orders</h3>
+        <h3 class="panel-title">Projects</h3>
     </div>
 
 
 
-    <table class="table table-striped">
+    <table class="table">
         <thead>
             <tr>
                 <th>#</th>
@@ -45,80 +45,36 @@
             </tr>
         </thead>
         <tbody>
-{% for project in projects %}
-            {% if project.status == 'WO' %}
-            <tr>
+                {% for project in quotes %}
+            <tr class="warning">
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.project_id }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date }}</a></th>
             </tr>
-            {% endif %}
             {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">Quotes</h3>
-    </div>
-
-
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Total</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-{% for project in projects %}
-            {% if project.status == 'QT' %}
-            <tr>
+                {% for project in work_order %}
+            <tr class="success">
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.project_id }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date }}</a></th>
             </tr>
-            {% endif %}
             {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">Completed</h3>
-    </div>
-
-
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Total</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-{% for project in projects %}
-            {% if project.status == 'CO' %}
-            <tr>
+                {% for project in completed %}
+            <tr class="completed">
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.project_id }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></th>
                 <th><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date }}</a></th>
             </tr>
-            {% endif %}
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+
+
 
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
