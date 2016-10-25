@@ -51,6 +51,9 @@ def ProjectDetailView(request, pk):
     project = get_object_or_404(Project, pk=pk)
     lineitems = project.line_item.all()
     status_form = ProjectStatusForm(request.POST or None, instance=project)
+    
+
+    
     if status_form.is_valid():
         if project.status == 'WO':
             project.status = 'CO'

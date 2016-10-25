@@ -25,8 +25,12 @@ class Client(models.Model):
     projects_total = property(_projects_total)
     
     def __str__(self):
-            return self.first_name + self.last_name
-    
+            #return self.first_name + self.last_name
+            if self.company_name:
+                return self.company_name
+            else:
+                return u'{1} {0}'.format(self.last_name, self.first_name)
+            
 class Project(models.Model):
     QUOTE = 'QT'
     WORK_ORDER = 'WO'

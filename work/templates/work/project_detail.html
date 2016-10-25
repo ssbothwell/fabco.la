@@ -10,7 +10,7 @@
     </div>
     <div class="panel-body">
         <div class="pull-left">
-            <a href=" {% url 'work:clients_detail' project.client.id %}"><h1>{{project.client.first_name}} {{project.client.last_name}}</a><small>  {{ project.name }}</small></h1>
+            <a href=" {% url 'work:clients_detail' project.client.id %}"><h1>{{ project.client }}</a><small>  {{ project.name }}</small></h1>
             <h4>Start Date: {{project.create_date}}</h4>
             <h4>Due Date: {{project.due_date}}</h4>
             <h4>Deposit: {{project.deposit}}%</h4>
