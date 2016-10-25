@@ -45,7 +45,7 @@
                     <td class="project-name"><a href="{% url 'work:project_detail' project.project_id %}">{{ project.name }}</a></td>
                     <td class="project-client"><a href="{% url 'work:project_detail' project.project_id %}">{{ project.client.first_name }} {{ project.client.last_name }}</a></td>
                     <td class="project-total"><a href="{% url 'work:project_detail' project.project_id %}">{{ project.total }}</a></td>
-                    <td class="project-due"><a href="{% url 'work:project_detail' project.project_id %}" data-dateformat="MMM DD YYYY">{{ project.due_date|date:"M d Y" }}</a></td>
+                    <td class="project-due" data-dateformat="MMM DD YYYY"><a href="{% url 'work:project_detail' project.project_id %}">{{ project.due_date|date:"M d Y" }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
