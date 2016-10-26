@@ -50,14 +50,12 @@ class StrainerForm(forms.Form): #Note that it is not inheriting from forms.Model
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_strainer'
-        
         self.helper.add_input(Submit('submit', 'Submit'))
 
 class ClientForm(ModelForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number',]
-
 
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
@@ -87,11 +85,8 @@ class ClientForm(ModelForm):
                 self.add_error('first_name', '')
                 self.add_error('last_name', '')
                 self.add_error('company_name', msg)
-                 
-        #return self.cleaned_data 
             
-            
-
+        
 class ClientAddressForm(ModelForm):
     class Meta:
         model = ClientAddress
@@ -121,7 +116,6 @@ class ProjectStatusForm(ModelForm):
 
 
 class LineItemForm(ModelForm):
-    
     class Meta:
         
         model = LineItem
@@ -131,6 +125,5 @@ class LineItemForm(ModelForm):
             'price': forms.TextInput(attrs={'size':'10'}),
             'quantity': forms.TextInput(attrs={'size':'10'}),            
         }
-       
-   
+          
 LineItemFormSet = inlineformset_factory(Project, LineItem, form=LineItemForm, can_order=True, can_delete=True, extra=1)
