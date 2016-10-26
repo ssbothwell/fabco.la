@@ -16,14 +16,14 @@ class Client(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], blank=True, max_length=15) # validators should be a list 
     
-    def _projects_total(self):
+    @property
+    def projects_total(self):
         """returns sum of client's project totals"""
         p_total = 0
         for project in self.projects.all():
             if project.status == 'WO':
                 p_total = p_total + project.total
         return p_total
-    projects_total = property(_projects_total)
     
     def __str__(self):
         """ name object as company name field if present otherwise first name + last name fields """
@@ -55,15 +55,14 @@ class Project(models.Model):
     discount = models.IntegerField(default=0)
 
 
-
-    def _project_sub_total(self):
+    @property
+    def sub_total(self):
         """returns sum of lineitem totals"""
         p_sub_total = sum(item.tallys['total'] for item in self.line_item.all())
-        
-            
         return p_sub_total
 
-    def _project_discount(self):
+    @property
+    def discount(self):
         """returns cash discount based on self.discount"""
         cash_discount = Decimal(0)
         if self.discount > 0:
@@ -71,33 +70,25 @@ class Project(models.Model):
         cash_discount = cash_discount.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
         return cash_discount
            
-
-    def _project_tax(self):
+    @property
+    def tax(self):
         """returns 9% tax on sub_total"""
         tax = Decimal(0.00)
         for item in self.line_item.all():
                tax = tax + Decimal(item.tallys['tax'])        
         return tax
 
-
-    def _project_total(self):
+    @property
+    def total(self):
         """sum sub_total and tax"""
-        total = self.tax + (self.sub_total - self.cash_discount)
-        
+        total = self.tax + (self.sub_total - self.cash_discount)        
         return total
-        
-    sub_total = property(_project_sub_total)
-    cash_discount = property(_project_discount)
-    tax = property(_project_tax)
-    total = property(_project_total)
 
     def __str__(self):
         """ Name object as name field """
         return self.name
                 
-
-               
-                
+                              
 class LineItem(models.Model):
     
     """ Product categories """
@@ -122,7 +113,8 @@ class LineItem(models.Model):
     taxable = models.BooleanField(default=True)    
     order = models.IntegerField(blank = True, null = True)
     
-    def _get_tallys(self):
+    @property
+    def tallys(self):
         """returns lineitem total, discount, and tax in a dict"""
         item_total = Decimal((self.price * self.quantity))
         cash_discount = Decimal(0.00)     
@@ -143,10 +135,9 @@ class LineItem(models.Model):
         }
         
         return tallys
-    tallys = property(_get_tallys)
     
-    
-    def _get_total(self):
+    @property
+    def total(self):
         """ Return just the lineitem total """
         item_total = Decimal((self.price * self.quantity))
         cash_discount = Decimal(0.00)
@@ -157,7 +148,7 @@ class LineItem(models.Model):
         final_total = item_total - cash_discount
         
         return final_total
-    total = property(_get_total)
+    
     
     def __str__(self):
             return self.name
