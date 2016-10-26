@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-
 from django.db import models
 import datetime
 from django.utils import timezone
@@ -8,6 +7,8 @@ from decimal import *
 
 
 class Client(models.Model):
+    
+    """ Fields """
     first_name = models.CharField(max_length=40, blank=True, null=True)
     last_name = models.CharField(max_length=40, blank=True, null=True)
     company_name = models.CharField(max_length=40, blank=True, null=True)
@@ -25,11 +26,11 @@ class Client(models.Model):
     projects_total = property(_projects_total)
     
     def __str__(self):
-            #return self.first_name + self.last_name
-            if self.company_name:
-                return self.company_name
-            else:
-                return u'{1} {0}'.format(self.last_name, self.first_name)
+        """ name object as company name field if present otherwise first name + last name fields """
+        if self.company_name:
+            return self.company_name
+        else:
+            return u'{1} {0}'.format(self.last_name, self.first_name)
             
 class Project(models.Model):
     QUOTE = 'QT'
@@ -40,7 +41,8 @@ class Project(models.Model):
         (WORK_ORDER, 'Work Order'),
         (COMPLETE, 'Complete'),
         )
-        
+    
+    """ Fields """    
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='projects')
     project_id = models.AutoField(primary_key=True)
     create_date = models.DateField('date created', auto_now_add=True)
@@ -74,8 +76,7 @@ class Project(models.Model):
         """returns 9% tax on sub_total"""
         tax = Decimal(0.00)
         for item in self.line_item.all():
-               tax = tax + Decimal(item.tallys['tax'])
-        
+               tax = tax + Decimal(item.tallys['tax'])        
         return tax
 
 
@@ -91,22 +92,28 @@ class Project(models.Model):
     total = property(_project_total)
 
     def __str__(self):
-            return self.name
+        """ Name object as name field """
+        return self.name
                 
 
-NameChoices = (
-('Strainer Bar', 'Strainer Bar'),
-('Stretching Fee', 'Stretching Fee'),
-('Panel', 'Panel'),
-('Pedestal', 'Pedestal'),
-('Framing', 'Framing'),
-('Crating', 'Crating'),
-('Welding', 'Welding'),
-('Delivery', 'Delivery'),
-('Custom', 'Custom'),
-)                
+               
                 
 class LineItem(models.Model):
+    
+    """ Product categories """
+    NameChoices = (
+    ('Strainer Bar', 'Strainer Bar'),
+    ('Stretching Fee', 'Stretching Fee'),
+    ('Panel', 'Panel'),
+    ('Pedestal', 'Pedestal'),
+    ('Framing', 'Framing'),
+    ('Crating', 'Crating'),
+    ('Welding', 'Welding'),
+    ('Delivery', 'Delivery'),
+    ('Custom', 'Custom'),
+    )
+    
+    """ Fields """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='line_item')
     name = models.CharField(max_length=15, choices=NameChoices)
     description = models.CharField(max_length=200, blank=True)
@@ -138,6 +145,7 @@ class LineItem(models.Model):
         return tallys
     tallys = property(_get_tallys)
     
+    
     def _get_total(self):
         """ Return just the lineitem total """
         item_total = Decimal((self.price * self.quantity))
@@ -158,6 +166,8 @@ class LineItem(models.Model):
         ordering = ('order',)
             
 class ClientAddress(models.Model):
+    
+    """ Fields """
     client = models.OneToOneField(Client, on_delete=models.CASCADE, related_name='address')
     street = models.CharField(max_length=40, null=True)
     city = models.CharField(max_length=20, null=True)
