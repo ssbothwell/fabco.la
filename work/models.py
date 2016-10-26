@@ -62,7 +62,7 @@ class Project(models.Model):
         return p_sub_total
 
     @property
-    def discount(self):
+    def cash_discount(self):
         """returns cash discount based on self.discount"""
         cash_discount = Decimal(0)
         if self.discount > 0:
