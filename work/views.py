@@ -29,16 +29,17 @@ def StrainerCalc(request):
     else:
         strainer_form = StrainerForm()
     
-    return render(request, 'work/strainer_form.html', {
+    context = {
         'strainer_form': strainer_form,
-     })
+     }
+    return render(request, 'work/strainer_form.html', context)
 
 
 @login_required(login_url='/login/')
 def ProjectIndexView(request, status):
     """ Display an Index of Projects"""
     projects_list = Project.objects.filter(status=status).order_by('due_date')
-    status = status
+    
     context = { 
     'projects_list': projects_list,
     'status': status,
@@ -51,8 +52,6 @@ def ProjectDetailView(request, pk):
     project = get_object_or_404(Project, pk=pk)
     lineitems = project.line_item.all()
     status_form = ProjectStatusForm(request.POST or None, instance=project)
-    
-
     
     if status_form.is_valid():
         if project.status == 'WO':
@@ -87,10 +86,13 @@ def ProjectCreateView(request):
     else:
         project_form = ProjectForm()
         lineitem_formset = LineItemFormSet(instance=Project())
-    return render(request, 'work/project_form.html', {
+    
+    
+    context = {
         'project_form': project_form,
         'lineitem_formset': lineitem_formset,
-     })
+    }
+    return render(request, 'work/project_form.html', context)
 
 
 @login_required(login_url='/login/')
@@ -100,18 +102,19 @@ def ProjectUpdateView(request, pk):
     lineitem_formset = LineItemFormSet(request.POST or None, instance=project)
     
     if project_form.is_valid():
-        obj1 = project_form.save(commit=False)
+        project_object = project_form.save(commit=False)
         if lineitem_formset.is_valid():
-            obj1.save()
+            project_object.save()
             lineitem_formset.save()
         return redirect('work:project_detail', project.pk)
     else:
-        obj1 = ProjectForm(instance=project)
-        
-    return render(request, 'work/project_form.html', {
+        project_object = ProjectForm(instance=project)
+    
+    context = {
             'project_form': project_form,
             'lineitem_formset': lineitem_formset,
-        })
+        }    
+    return render(request, 'work/project_form.html', context)
 
 @login_required(login_url='/login/')    
 def PrintPdfView(request, pk):
@@ -145,13 +148,13 @@ def ProjectDeleteView(request, pk):
     }
     
     project.delete()
-
     return redirect(index_dict[status])
 
 
 @login_required(login_url='/login/')
 def ClientIndex(request):
     clients_list = Client.objects.all().order_by('first_name')
+    
     context = { 
     'clients_list': clients_list,
     }
@@ -167,6 +170,7 @@ def ClientDetailView(request, pk):
         work_order = client.projects.filter(status='WO')
     except Client.DoesNotExist:
         raise Http404("Client does not exist")
+        
     context = {
         'client': client,
         'quotes': quotes,
@@ -191,10 +195,12 @@ def ClientCreateView(request):
     else:
         client_form = ClientForm()
         address_form = ClientAddressForm()
-    return render(request, 'work/client_form.html', {
+        
+    context = {
         'client_form': client_form,
         'address_form': address_form,
-    })
+    }
+    return render(request, 'work/client_form.html', context)
 
 
 @login_required(login_url='/login/')
@@ -203,18 +209,19 @@ def ClientUpdateView(request, pk):
     client_form = ClientForm(request.POST or None, instance=client)
     address_form = ClientAddressForm(request.POST or None, instance=client.address)
     if all([client_form.is_valid(), address_form.is_valid()]):
-        obj1 = client_form.save()
-        obj2 = address_form.save(commit=False)
-        obj2.client = obj1
-        obj2.save()
+        client_object = client_form.save()
+        address_object = address_form.save(commit=False)
+        address_object.client = client_object
+        address_object.save()
         return redirect('work:client_index')
     else:
         form = ClientForm(initial={'first_name': client.first_name, 'last_name': client.last_name})
-
-    return render(request, 'work/client_form.html', {
+    
+    context = {
             'client_form': client_form,
             'address_form': address_form,
-        })
+    }
+    return render(request, 'work/client_form.html', context)
                             
 
 @login_required(login_url='/login/')    
@@ -245,17 +252,13 @@ def ReportView(request):
             quarterThree += p.tax        
         if date(2016,10,01) <= p.completion_date <= date(2016,12,31):
             quarterFour += p.tax
-
-
-    
+ 
     Quarterlies = {
                     "quarterOne": quarterOne,
                     "quarterTwo": quarterTwo,
                     "quarterThree": quarterThree,
                     "quarterFour": quarterFour,
                 }
-
-
 
     # These month strings are just filler, shouldn't be necessary but idk a better way
     months = [ 'null', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
@@ -272,9 +275,6 @@ def ReportView(request):
                     'welding': 0,
                     'custom': 0,
                     }
-    
-    
-        
     
     # Loop through months and for each month loop through lineItems completed in that month and aggregate them into the months list
     for month in range (1, 13):
@@ -297,8 +297,6 @@ def ReportView(request):
             if item.name == "custom":
                 months[month]['custom'] += item.tallys['total'] -  item.tallys['discount']
             
-            
-    
     # Kinda dumb but it works way of naming the nested dicts in the month list
     MonthlyStats = {
             "January": months[1],
@@ -315,12 +313,9 @@ def ReportView(request):
             "December": months[12],
     }
     
-    
-    
     context = {
              'projects': projects,
              'Quarterlies': Quarterlies,
              'MonthlyStats': MonthlyStats,
     }
-    
     return render(request, 'work/report_detail.html', context)
