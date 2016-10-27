@@ -115,12 +115,18 @@ class ProjectStatusForm(ModelForm):
         fields = ['status']
 
 
+class LineItemSelectorForm(forms.Form):
+    CHOICES = LineItem.NameChoices
+    LineItemType = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={"onChange":'descriptionForm()'}))
+    
+    
 class LineItemForm(ModelForm):
     class Meta:
         
         model = LineItem
         fields = ['order', 'name', 'description', 'price', 'quantity', 'taxable',]
         widgets = {
+            'name': forms.Select(attrs={"onChange":'descriptionForm()'}),
             'description': forms.Textarea(attrs={'cols': 40, 'rows': 2}),
             'price': forms.TextInput(attrs={'size':'10'}),
             'quantity': forms.TextInput(attrs={'size':'10'}),            

@@ -62,44 +62,78 @@
             <tbody id="lineitems">
                 {% for lineitem in lineitem_formset %}
                 <tr id="{{ lineitem.prefix}}-row">
-                    {{lineitem.id}}
-                    <td><span class="glyphicon glyphicon-sort">{{lineitem.order.as_hidden}}</span></td>
+                    {{ lineitem.id }}
+                    <td><span class="glyphicon glyphicon-sort">{{ lineitem.order }}</span></td>
                     <td>{% if lineitem.instance.pk %}{{ lineitem.DELETE|addcss:"form-control" }}{% endif %}
                         {{ lineitem.name|addcss:"form-control" }}{{ lineitem.description|addcss:"form-control" }}</td>
                     <td>{{ lineitem.price|addcss:"form-control" }}</td>
                     <td>{{ lineitem.quantity|addcss:"form-control" }}</td>
                     <td>{{ lineitem.taxable|addcss:"form-control" }}</td>
-                    <td></td>
+                    <td id="parenttest"><a class="glyphicon glyphicon-trash" href="javascript:void(0)" onClick="deleteFunction(this)"></a></td>
                 </tr>
                 {% endfor %}
+
             </tbody>
         </table>
 
         {{lineitem_formset.management_form}}
 
         <div class="form-group">
+            <input class="btn btn-primary" type="button" value="Add Lineitem" id="add_more">
             <input class="btn btn-primary" type="submit" value="Save" />
         </div>
     </form>
 </div>
 
-
-<script type="text/javascript">
-    $(function() {
-        $('#lineitems tr').formset({
-            prefix: 'line_item',
-            deleteCssClass: 'glyphicon glyphicon-trash',
-            addCssClass: 'glyphicon glyphicon-plus',
-            deleteText: '',
-            addText: 'New Item'   
-        })
-    })
+<script type="text/html" id="item-template">
+<tr id="line_item-__prefix__-row">
+    {{ lineitem_formset.empty_form.id }}
+    <td><span class="glyphicon glyphicon-sort">{{ lineitem_formset.empty_form.order.as_hidden }}</span></td>
+    <td>{% if lineitem_formset.empty_form.instance.pk %}{{ lineitem_formset.empty_form.DELETE|addcss:"form-control" }}{% endif %}
+        {{ lineitem_formset.empty_form.name|addcss:"form-control" }}{{ lineitem_formset.empty_form.description|addcss:"form-control" }}</td>
+    <td>{{ lineitem_formset.empty_form.price|addcss:"form-control" }}</td>
+    <td>{{ lineitem_formset.empty_form.quantity|addcss:"form-control" }}</td>
+    <td>{{ lineitem_formset.empty_form.taxable|addcss:"form-control" }}</td>
+    <td><a class="glyphicon glyphicon-trash" href="javascript:void(0)" onClick="deleteFunction(this)"></a></td>
+</tr>
 </script>
+
 <script>
-$(function() {
-  $( ".datepicker" ).datepicker();
+function deleteFunction(el) {    
+    // Get form field IDs
+    var row = el.parentNode.parentNode.id;
+    var checkbox = 'id_' + row.slice(0, -3) + 'DELETE'; 
+    var description = 'id_' + row.slice(0, -3) + 'description';
+    var price = 'id_' + row.slice(0, -3) + 'price';
+    var quantity = 'id_' + row.slice(0, -3) + 'quantity';
+    
+    // Check hidden delete checkbox
+    if(document.getElementById(checkbox)) {
+        document.getElementById(checkbox).checked = true;
+    };    
+    // Clear form fields
+    document.getElementById(description).value = '';
+    document.getElementById(price).value = '';
+    document.getElementById(quantity).value = '';
+    // Hide row    
+    document.getElementById(row).style.display = 'none';
+};
+</script>
+
+<script>
+$(document).ready(function() {
+    $( ".datepicker" ).datepicker();
+    $('#add_more').click(function(ev) {
+        ev.preventDefault();
+        var count = $('#lineitems').children().length;
+        var tmplMarkup = $('#item-template').html();
+        var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+        $('#lineitems').append(compiledTmpl);
+
+        // update form count
+        $('#id_line_item-TOTAL_FORMS').attr('value', count+1);
+    });
 });
 </script>
+
 {% endblock %} 
-
-

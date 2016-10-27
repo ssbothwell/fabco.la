@@ -86,11 +86,12 @@ def ProjectCreateView(request):
     else:
         project_form = ProjectForm()
         lineitem_formset = LineItemFormSet(instance=Project())
-    
+        select_form = LineItemSelectorForm()
     
     context = {
         'project_form': project_form,
         'lineitem_formset': lineitem_formset,
+        'select_form': select_form,
     }
     return render(request, 'work/project_form.html', context)
 
@@ -100,6 +101,7 @@ def ProjectUpdateView(request, pk):
     project = get_object_or_404(Project, pk=pk)
     project_form = ProjectForm(request.POST or None, instance=project)
     lineitem_formset = LineItemFormSet(request.POST or None, instance=project)
+    select_form = LineItemSelectorForm()
     
     if project_form.is_valid():
         project_object = project_form.save(commit=False)
@@ -113,6 +115,7 @@ def ProjectUpdateView(request, pk):
     context = {
             'project_form': project_form,
             'lineitem_formset': lineitem_formset,
+            'select_form': select_form,
         }    
     return render(request, 'work/project_form.html', context)
 
