@@ -25,7 +25,12 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '+-i%mwy$)_=5fvjh-2q=sfybu&-ofumsnj8koqeu&&nu!g1*2s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# On production:
+# turn debug on: heroku config:add DJANGO_DEBUG=true 
+# turn debuf off: heroku config:remove DJANGO_DEBUG
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
+TEMPLATE_DEBUG = DEBUG
+
 
 ALLOWED_HOSTS = ['*']
 
