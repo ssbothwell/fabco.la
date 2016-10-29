@@ -28,10 +28,10 @@ SECRET_KEY = '+-i%mwy$)_=5fvjh-2q=sfybu&-ofumsnj8koqeu&&nu!g1*2s'
 # On production:
 # turn debug on: heroku config:add DJANGO_DEBUG=true 
 # turn debuf off: heroku config:remove DJANGO_DEBUG
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
-TEMPLATE_DEBUG = DEBUG
+#bool(os.environ.get('DJANGO_DEBUG', ''))
+#TEMPLATE_DEBUG = DEBUG
 
-
+DEBUG = False 
 ALLOWED_HOSTS = ['*']
 
 
