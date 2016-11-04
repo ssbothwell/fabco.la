@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^projects/complete$', views.ProjectIndexView, {'status': 'CO'}, name='complete_index'), 
     url(r'^projects/work_orders$', views.ProjectIndexView, {'status': 'WO'}, name='work_order_index'), 
     url(r'^projects/quotes$', views.ProjectIndexView, {'status': 'QT'}, name='quote_index'), 
+    url(r'^projects/$', views.ProjectIndexView, {'status': 'WO'}, name='work_order_index'),
     url(r'^projects/(?P<pk>[0-9]+)/$', views.ProjectDetailView, name='project_detail'),
     url(r'^projects/create/$', views.ProjectCreateView, name='project_create'),
     url(r'^projects/(?P<pk>[0-9]+)/update/$', views.ProjectUpdateView, name='project_update'),
