@@ -7,15 +7,15 @@ from decimal import *
 
 
 class Client(models.Model):
-    
+
     """ Fields """
     first_name = models.CharField(max_length=40, blank=True, null=True)
     last_name = models.CharField(max_length=40, blank=True, null=True)
     company_name = models.CharField(max_length=40, blank=True, null=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], blank=True, max_length=15) # validators should be a list 
-    
+    phone_number = models.CharField(validators=[phone_regex], blank=True, max_length=15) # validators should be a list
+
     @property
     def projects_total(self):
         """returns sum of client's project totals"""
@@ -24,14 +24,14 @@ class Client(models.Model):
             if project.status == 'WO':
                 p_total = p_total + project.total
         return p_total
-    
+
     def __str__(self):
         """ name object as company name field if present otherwise first name + last name fields """
         if self.company_name:
             return self.company_name
         else:
             return u'{1} {0}'.format(self.last_name, self.first_name)
-            
+
 class Project(models.Model):
     QUOTE = 'QT'
     WORK_ORDER = 'WO'
@@ -41,8 +41,8 @@ class Project(models.Model):
         (WORK_ORDER, 'Work Order'),
         (COMPLETE, 'Complete'),
         )
-    
-    """ Fields """    
+
+    """ Fields """
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='projects')
     project_id = models.AutoField(primary_key=True)
     create_date = models.DateField('date created', auto_now_add=True)
@@ -66,31 +66,31 @@ class Project(models.Model):
         """returns cash discount based on self.discount"""
         cash_discount = Decimal(0)
         if self.discount > 0:
-            cash_discount = self.sub_total * ( Decimal(self.discount) / 100 ) 
+            cash_discount = self.sub_total * ( Decimal(self.discount) / 100 )
         cash_discount = cash_discount.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
         return cash_discount
-           
+
     @property
     def tax(self):
         """returns 9% tax on sub_total"""
         tax = Decimal(0.00)
         for item in self.line_item.all():
-               tax = tax + Decimal(item.tallys['tax'])        
+               tax = tax + Decimal(item.tallys['tax'])
         return tax
 
     @property
     def total(self):
         """sum sub_total and tax"""
-        total = self.tax + (self.sub_total - self.cash_discount)        
+        total = self.tax + (self.sub_total - self.cash_discount)
         return total
 
     def __str__(self):
         """ Name object as name field """
         return self.name
-                
-                              
+
+
 class LineItem(models.Model):
-    
+
     """ Product categories """
     NameChoices = (
     ('Strainer Bar', 'Strainer Bar'),
@@ -103,61 +103,61 @@ class LineItem(models.Model):
     ('Delivery', 'Delivery'),
     ('Custom', 'Custom'),
     )
-    
+
     """ Fields """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='line_item')
     name = models.CharField(max_length=15, choices=NameChoices)
     description = models.CharField(max_length=200, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     quantity = models.PositiveIntegerField(null=True)
-    taxable = models.BooleanField(default=True)    
+    taxable = models.BooleanField(default=True)
     order = models.IntegerField(blank = True, null = True)
-    
+
     @property
     def tallys(self):
         """returns lineitem total, discount, and tax in a dict"""
         item_total = Decimal((self.price * self.quantity))
-        cash_discount = Decimal(0.00)     
+        cash_discount = Decimal(0.00)
         tax = Decimal(0.00)
-           
+
         if self.project.discount > 0:
            cash_discount = item_total * ( Decimal(self.project.discount) / 100 )
-        
+
         if self.taxable == True:
             total_post_discount = item_total - cash_discount
             tax = total_post_discount * Decimal(0.09)
             tax = tax.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-    
+
         tallys = {
             'total': item_total,
             'discount': cash_discount,
             'tax': tax,
         }
-        
+
         return tallys
-    
+
     @property
     def total(self):
         """ Return just the lineitem total """
         item_total = Decimal((self.price * self.quantity))
         cash_discount = Decimal(0.00)
-        
+
         if self.project.discount > 0:
-           cash_discount = item_total * ( Decimal(self.project.discount) / 100 )    
-        
+           cash_discount = item_total * ( Decimal(self.project.discount) / 100 )
+
         final_total = item_total - cash_discount
-        
+
         return final_total
-    
-    
+
+
     def __str__(self):
             return self.name
-            
+
     class Meta:
         ordering = ('order',)
-            
+
 class ClientAddress(models.Model):
-    
+
     """ Fields """
     client = models.OneToOneField(Client, on_delete=models.CASCADE, related_name='address')
     street = models.CharField(max_length=40, null=True)

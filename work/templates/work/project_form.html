@@ -7,26 +7,26 @@
     <div class="panel-heading">
         <h3 class="panel-title">Create Project Form</h3>
     </div>
-    
+
     <form id="myForm" action="" method="post">
         {% csrf_token %}
         {{ project_form.non_field_errors }}
-        
+
         <div class="col-md-12">
         <div class="form-group">
-            <label for="Project Name" class="control-label">Project Name</label>    
+            <label for="Project Name" class="control-label">Project Name</label>
             {{ project_form.name|addcss:"form-control" }}
         </div>
         </div>
-        
+
         <div class="form-group col-md-6">
             <div class="form-group">
-                <label for="Client" class="control-label">Client</label>    
+                <label for="Client" class="control-label">Client</label>
                 {{ project_form.client|addcss:"form-control" }}
             </div>
             <div class="form-group">
-                <label for="Due Date" class="control-label">Due Date</label>    
-                
+                <label for="Due Date" class="control-label">Due Date</label>
+
                 <div class="input-group">
                 {{ project_form.due_date|addcss:"form-control datepicker" }}
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar "></span></span>
@@ -35,15 +35,15 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="Confirmed" class="control-label">Status</label>    
+                <label for="Confirmed" class="control-label">Status</label>
                 {{ project_form.status|addcss:"form-control" }}
             </div>
             <div class="form-group">
-                <label for="Deposit" class="control-label">Deposit</label>    
+                <label for="Deposit" class="control-label">Deposit</label>
                 {{ project_form.deposit|addcss:"form-control" }}
             </div>
             <div class="form-group">
-                <label for="Discount" class="control-label">Discount</label>    
+                <label for="Discount" class="control-label">Discount</label>
                 {{ project_form.discount|addcss:"form-control" }}
             </div>
         </div>
@@ -69,7 +69,7 @@
                     <td>{{ lineitem.price|addcss:"form-control" }}</td>
                     <td>{{ lineitem.quantity|addcss:"form-control" }}</td>
                     <td>{{ lineitem.taxable|addcss:"form-control" }}</td>
-                    <td id="parenttest"><a class="glyphicon glyphicon-trash" href="javascript:void(0)" onClick="deleteFunction(this)"></a></td>
+                    <td><a class="glyphicon glyphicon-trash" href="javascript:void(0)" onClick="deleteFunction(this)"></a></td>
                 </tr>
                 {% endfor %}
 
@@ -77,13 +77,30 @@
         </table>
 
         {{lineitem_formset.management_form}}
-
+        {{ select_form.as_p }}
         <div class="form-group">
             <input class="btn btn-primary" type="button" value="Add Lineitem" id="add_more">
             <input class="btn btn-primary" type="submit" value="Save" />
         </div>
     </form>
 </div>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th>Name/Description</th>
+            <th>Unit Cost</th>
+            <th>Quantity</th>
+            <th>Taxable</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="test">
+    </tbody>
+</table>
+{{ StrainerItemForm.as_p }}
 
 <script type="text/html" id="item-template">
 <tr id="line_item-__prefix__-row">
@@ -96,28 +113,6 @@
     <td>{{ lineitem_formset.empty_form.taxable|addcss:"form-control" }}</td>
     <td><a class="glyphicon glyphicon-trash" href="javascript:void(0)" onClick="deleteFunction(this)"></a></td>
 </tr>
-</script>
-
-<script>
-function deleteFunction(el) {    
-    // Get form field IDs
-    var row = el.parentNode.parentNode.id;
-    var checkbox = 'id_' + row.slice(0, -3) + 'DELETE'; 
-    var description = 'id_' + row.slice(0, -3) + 'description';
-    var price = 'id_' + row.slice(0, -3) + 'price';
-    var quantity = 'id_' + row.slice(0, -3) + 'quantity';
-    
-    // Check hidden delete checkbox
-    if(document.getElementById(checkbox)) {
-        document.getElementById(checkbox).checked = true;
-    };    
-    // Clear form fields
-    document.getElementById(description).value = '';
-    document.getElementById(price).value = '';
-    document.getElementById(quantity).value = '';
-    // Hide row    
-    document.getElementById(row).style.display = 'none';
-};
 </script>
 
 <script>
@@ -136,4 +131,4 @@ $(document).ready(function() {
 });
 </script>
 
-{% endblock %} 
+{% endblock %}

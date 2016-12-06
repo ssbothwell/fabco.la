@@ -16,19 +16,19 @@ from .forms import *
 def StrainerCalc(request):
     if request.method == 'POST':
         strainer_form = StrainerForm(request.POST)
-        
+
         if strainer_form.is_valid():
             strainerData = strainer_form.cleaned_data
-            
+
             strainer = Strainer(strainerData['xDim'], strainerData['yDim'], strainerData['thickness'], strainerData['quantity'], strainerData['fourQuarter'], strainerData['nineQuarter'])
-                        
+
             return render(request, 'work/strainer_form.html', {
                 'strainer_form': strainer_form,
-                'strainer': strainer, 
+                'strainer': strainer,
                  })
     else:
         strainer_form = StrainerForm()
-    
+
     context = {
         'strainer_form': strainer_form,
      }
@@ -39,20 +39,20 @@ def StrainerCalc(request):
 def ProjectIndexView(request, status):
     """ Display an Index of Projects"""
     projects_list = Project.objects.filter(status=status).order_by('due_date')
-    
-    context = { 
+
+    context = {
     'projects_list': projects_list,
     'status': status,
     }
     return render(request, 'work/project_index.html', context)
-        
-        
+
+
 @login_required(login_url='/login/')
-def ProjectDetailView(request, pk):    
+def ProjectDetailView(request, pk):
     project = get_object_or_404(Project, pk=pk)
     lineitems = project.line_item.all()
     status_form = ProjectStatusForm(request.POST or None, instance=project)
-    
+
     if status_form.is_valid():
         if project.status == 'WO':
             project.status = 'CO'
@@ -72,7 +72,7 @@ def ProjectDetailView(request, pk):
     return render(request, 'work/project_detail.html', context)
 
 
-@login_required(login_url='/login/')            
+@login_required(login_url='/login/')
 def ProjectCreateView(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
@@ -87,7 +87,7 @@ def ProjectCreateView(request):
         project_form = ProjectForm()
         lineitem_formset = LineItemFormSet(instance=Project())
         select_form = LineItemSelectorForm()
-    
+
     context = {
         'project_form': project_form,
         'lineitem_formset': lineitem_formset,
@@ -102,7 +102,9 @@ def ProjectUpdateView(request, pk):
     project_form = ProjectForm(request.POST or None, instance=project)
     lineitem_formset = LineItemFormSet(request.POST or None, instance=project)
     select_form = LineItemSelectorForm()
-    
+
+    #StrainerItemFormset
+
     if project_form.is_valid():
         project_object = project_form.save(commit=False)
         if lineitem_formset.is_valid():
@@ -111,36 +113,36 @@ def ProjectUpdateView(request, pk):
         return redirect('work:project_detail', project.pk)
     else:
         project_object = ProjectForm(instance=project)
-    
+
     context = {
             'project_form': project_form,
             'lineitem_formset': lineitem_formset,
             'select_form': select_form,
-        }    
+        }
     return render(request, 'work/project_form.html', context)
 
-@login_required(login_url='/login/')    
+@login_required(login_url='/login/')
 def PrintPdfView(request, pk):
     project = get_object_or_404(Project, pk=pk)
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
- 
+
     buffer = BytesIO()
- 
+
     report = MyPrint(buffer, 'Letter', pk)
     if project.status == 'QT':
         response['Content-Disposition'] = 'inline; filename="%s-Quote-%s.pdf"' % (project.client, project.project_id)
         pdf = report.print_quote()
     else:
         response['Content-Disposition'] = 'inline; filename="%s-WorkOrder-%s.pdf"' % (project.client, project.project_id)
-        pdf = report.print_work_order()    
-        
-    
+        pdf = report.print_work_order()
+
+
     response.write(pdf)
     return response
 
 
-@login_required(login_url='/login/')    
+@login_required(login_url='/login/')
 def ProjectDeleteView(request, pk):
     project = Project.objects.get(pk=pk)
     status = str(project.status)
@@ -149,7 +151,7 @@ def ProjectDeleteView(request, pk):
         'WO': 'work:work_order_index',
         'CO': 'work:complete_index',
     }
-    
+
     project.delete()
     return redirect(index_dict[status])
 
@@ -157,8 +159,8 @@ def ProjectDeleteView(request, pk):
 @login_required(login_url='/login/')
 def ClientIndex(request):
     clients_list = Client.objects.all().order_by('first_name')
-    
-    context = { 
+
+    context = {
     'clients_list': clients_list,
     }
     return render(request, 'work/client_index.html', context)
@@ -173,7 +175,7 @@ def ClientDetailView(request, pk):
         work_order = client.projects.filter(status='WO')
     except Client.DoesNotExist:
         raise Http404("Client does not exist")
-        
+
     context = {
         'client': client,
         'quotes': quotes,
@@ -194,11 +196,11 @@ def ClientCreateView(request):
             obj2.client = obj1
             obj2.save()
             return redirect('work:client_index')
-            
+
     else:
         client_form = ClientForm()
         address_form = ClientAddressForm()
-        
+
     context = {
         'client_form': client_form,
         'address_form': address_form,
@@ -219,43 +221,43 @@ def ClientUpdateView(request, pk):
         return redirect('work:client_index')
     else:
         form = ClientForm(initial={'first_name': client.first_name, 'last_name': client.last_name})
-    
+
     context = {
             'client_form': client_form,
             'address_form': address_form,
     }
     return render(request, 'work/client_form.html', context)
-                            
 
-@login_required(login_url='/login/')    
+
+@login_required(login_url='/login/')
 def ClientDeleteView(request, pk):
     client = Client.objects.get(pk=pk)
     client.delete()
 
     return redirect('work:client_index')
 
-   
+
 @login_required(login_url='/login/')
 def ReportView(request):
     projects = Project.objects.filter(status='CO')
-    
+
     p1 = Project.objects.filter(completion_date__range=["2016-01-01", "2016-12-31"])
-    
+
     quarterOne = 0
     quarterTwo = 0
     quarterThree = 0
     quarterFour = 0
-    
-    for p in projects: 
+
+    for p in projects:
         if date(2016,01,01) <= p.completion_date <= date(2016,3,31):
             quarterOne += p.tax
         if date(2016,04,01) <= p.completion_date <= date(2016,6,30):
             quarterTwo += p.tax
         if date(2016,07,01) <= p.completion_date <= date(2016,9,30):
-            quarterThree += p.tax        
+            quarterThree += p.tax
         if date(2016,10,01) <= p.completion_date <= date(2016,12,31):
             quarterFour += p.tax
- 
+
     Quarterlies = {
                     "quarterOne": quarterOne,
                     "quarterTwo": quarterTwo,
@@ -265,10 +267,10 @@ def ReportView(request):
 
     # These month strings are just filler, shouldn't be necessary but idk a better way
     months = [ 'null', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
-    
+
     # Replace filler month strings with lineItem type dict for each month
     for int in range(1, 13):
-        months[int] = { 
+        months[int] = {
                     'strainerBars': 0,
                     'panels': 0,
                     'stretchingFee': 0,
@@ -278,7 +280,7 @@ def ReportView(request):
                     'welding': 0,
                     'custom': 0,
                     }
-    
+
     # Loop through months and for each month loop through lineItems completed in that month and aggregate them into the months list
     for month in range (1, 13):
         lineItems = LineItem.objects.filter(project__completion_date__year=2016, project__completion_date__month=month)
@@ -294,12 +296,12 @@ def ReportView(request):
             if item.name == "Framing":
                 months[month]['framing'] += item.tallys['total'] -  item.tallys['discount']
             if item.name == "crating":
-                months[month]['crating'] += item.tallys['total'] -  item.tallys['discount']  
+                months[month]['crating'] += item.tallys['total'] -  item.tallys['discount']
             if item.name == "welding":
                 months[month]['welding'] += item.tallys['total'] -  item.tallys['discount']
             if item.name == "custom":
                 months[month]['custom'] += item.tallys['total'] -  item.tallys['discount']
-            
+
     # Kinda dumb but it works way of naming the nested dicts in the month list
     MonthlyStats = {
             "January": months[1],
@@ -315,7 +317,7 @@ def ReportView(request):
             "November": months[11],
             "December": months[12],
     }
-    
+
     context = {
              'projects': projects,
              'Quarterlies': Quarterlies,
