@@ -64,8 +64,12 @@
                 <tr id="{{ lineitem.prefix}}-row">
                     {{ lineitem.id }}
                     <td><span class="glyphicon glyphicon-sort">{{ lineitem.order }}</span></td>
-                    <td>{% if lineitem.instance.pk %}{{ lineitem.DELETE|addcss:"form-control" }}{% endif %}
-                        {{ lineitem.name|addcss:"form-control" }}{{ lineitem.description|addcss:"form-control" }}</td>
+                    <td>{% if lineitem.instance.pk %}
+                          {{ lineitem.DELETE|addcss:"hidden" }}
+                        {% endif %}
+                        {{ lineitem.name|addcss:"form-control" }}
+                        {{ lineitem.description|addcss:"form-control" }}
+                    </td>
                     <td>{{ lineitem.price|addcss:"form-control" }}</td>
                     <td>{{ lineitem.quantity|addcss:"form-control" }}</td>
                     <td>{{ lineitem.taxable|addcss:"form-control" }}</td>
@@ -85,21 +89,6 @@
     </form>
 </div>
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Order</th>
-            <th>Name/Description</th>
-            <th>Unit Cost</th>
-            <th>Quantity</th>
-            <th>Taxable</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="test">
-    </tbody>
-</table>
 {{ StrainerItemForm.as_p }}
 
 <script type="text/html" id="item-template">

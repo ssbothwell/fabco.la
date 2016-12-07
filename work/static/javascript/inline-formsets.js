@@ -20,6 +20,7 @@ function deleteFunction(el) {
     // Check hidden delete checkbox
     if(document.getElementById(checkbox)) {
         document.getElementById(checkbox).checked = true;
+        alert(document.getElementById(checkbox).checked);
     };
     // Clear form fields
     document.getElementById(description).value = '';
@@ -28,6 +29,7 @@ function deleteFunction(el) {
     // Hide row
     document.getElementById(row).style.display = 'none';
 };
+
 function lineItemSelector(selection) {
 
     // LineItem Table Row
@@ -43,7 +45,7 @@ function lineItemSelector(selection) {
     var taxableColumn = document.createElement("td");
     var deleteColumn = document.createElement("td");
 
-    //// Fields:
+    // Fields:
 
     // ID
 
@@ -119,7 +121,8 @@ function lineItemSelector(selection) {
     var deleteField = document.createElement("input");
     deleteField.setAttribute("class", "form-control");
     deleteField.setAttribute("type", "checkbox");
-    //deleteField.setAttribute("style", "display:none");
+    deleteField.setAttribute("type", "hidden");
+
     // Pack DOM
 
     //orderColumn
